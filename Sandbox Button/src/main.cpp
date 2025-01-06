@@ -19,19 +19,24 @@ void setup() {
 void loop() {
   testButton.update();
 
+  // if(testButton.pressed()){
+  //   if(prevPressed == false) {
+  //     prevPressed = true;
+  //     Keyboard.press(KEY);
+  //     Serial.println("Up pressed.");
+  //     Keyboard.releaseAll();
+  //     delay(20);
+  //   } else {
+  //     prevPressed = false;
+  //     Keyboard.press(KEY);
+  //     Serial.println("Up pressed again.");
+  //     Keyboard.releaseAll();
+  //     delay(20);
+  //   }
+  //}
+
   if(testButton.pressed()){
-    if(prevPressed == false) {
-      prevPressed = true;
-      Keyboard.press(KEY);
-      Keyboard.release(KEY);
-      delay(20);
-      //Keyboard.release(KEY);
-    } else {
-      prevPressed = false;
-      Keyboard.press(KEY);
-      Keyboard.release(KEY);
-      delay(20);
-      //Keyboard.release(KEY);
-    }
+    Keyboard.press(KEY);
+    Keyboard.releaseAll();
   }
 }
