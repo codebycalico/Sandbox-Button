@@ -19,6 +19,10 @@ void setup() {
 void loop() {
   testButton.update();
 
+  // //This code alternates between presses.
+  // //If it is pressed once that turns it on, if it is pressed again,
+  // //that turns it off. This is taken care of in the Unity script
+  // //but I added the functionality here too if we need it in the future.
   // if(testButton.pressed()){
   //   if(prevPressed == false) {
   //     prevPressed = true;
