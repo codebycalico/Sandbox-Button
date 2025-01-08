@@ -1,46 +1,64 @@
 #include <Arduino.h>
 #include <Bounce2.h>
 
-#define BUTTON_PIN 1
+#define GREEN_BUTTON_PIN 1
+#define RED_BUTTON_PIN 0
 #define KEY KEY_UP
 
 bool prevPressed = false;
 
-Bounce2::Button testButton = Bounce2::Button();
+Bounce2::Button greenButton = Bounce2::Button();
+Bounce2::Button redButton = Bounce2::Button();
 
 void setup() {
-  testButton.attach(BUTTON_PIN, INPUT_PULLUP);
-  testButton.interval(5);
-  testButton.setPressedState(LOW);
+  greenButton.attach(GREEN_BUTTON_PIN, INPUT_PULLUP);
+  redButton.attach(RED_BUTTON_PIN, INPUT_PULLUP);
+  greenButton.interval(5);
+  redButton.interval(5);
+  greenButton.setPressedState(LOW);
+  redButton.setPressedState(LOW);
   Serial.begin(9600);
   Keyboard.begin();
 }
 
 void loop() {
-  testButton.update();
+  greenButton.update();
+  redButton.update();
 
-  // //This code alternates between presses.
-  // //If it is pressed once that turns it on, if it is pressed again,
-  // //that turns it off. This is taken care of in the Unity script
-  // //but I added the functionality here too if we need it in the future.
-  // if(testButton.pressed()){
+  //This code alternates between presses.
+  //If it is pressed once that turns it on, if it is pressed again,
+  //that turns it off. This is taken care of in the Unity script
+  //but I added the functionality here too if we need it in the future.
+  // if(greenButton.pressed()){
   //   if(prevPressed == false) {
   //     prevPressed = true;
   //     Keyboard.press(KEY);
-  //     Serial.println("Up pressed.");
-  //     Keyboard.releaseAll();
+  //     Serial.println("UP key pressed.");
   //     delay(20);
   //   } else {
   //     prevPressed = false;
-  //     Keyboard.press(KEY);
-  //     Serial.println("Up pressed again.");
+  //     Serial.println("UP key released.");
   //     Keyboard.releaseAll();
   //     delay(20);
   //   }
-  //}
+  // }
 
-  if(testButton.pressed()){
+  // if(greenButton.pressed()){
+  //   Keyboard.press(KEY);
+  //   Keyboard.releaseAll();
+  // }
+
+  if(greenButton.pressed() && !prevPressed){
+    prevPressed = true;
+    Mouse.press();
+  } else if(greenButton.pressed() && prevPressed){
+    prevPressed = false;
+    Mouse.release();
+  }
+
+  if(redButton.pressed()){
     Keyboard.press(KEY);
+    delay(20);
     Keyboard.releaseAll();
   }
 }
