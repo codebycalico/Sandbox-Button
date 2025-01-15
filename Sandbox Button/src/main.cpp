@@ -11,12 +11,15 @@ Bounce2::Button greenButton = Bounce2::Button();
 Bounce2::Button redButton = Bounce2::Button();
 
 void setup() {
+  // Button setups
   greenButton.attach(GREEN_BUTTON_PIN, INPUT_PULLUP);
   redButton.attach(RED_BUTTON_PIN, INPUT_PULLUP);
   greenButton.interval(5);
   redButton.interval(5);
   greenButton.setPressedState(LOW);
   redButton.setPressedState(LOW);
+
+  // Serial and keyboard starts
   Serial.begin(9600);
   Keyboard.begin();
 }
@@ -48,6 +51,9 @@ void loop() {
   //   Keyboard.releaseAll();
   // }
 
+// If green button is pressed, then press the mouse
+// In the Unity program, this coordinates to creating water
+// in the simulation (adds more water when the "mouse" is pressed)
   if(greenButton.pressed() && !prevPressed){
     prevPressed = true;
     Mouse.press();
@@ -56,6 +62,9 @@ void loop() {
     Mouse.release();
   }
 
+// If red button is pressed, press the key "up"
+// In the Unity program, this coordinates to clearing the water
+// from the simulation
   if(redButton.pressed()){
     Keyboard.press(KEY);
     delay(20);
