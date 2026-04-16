@@ -1,71 +1,54 @@
+/*
+ * Where Is The Water
+ * Nat Sci Hall - OMSI
+ * Calico Rose
+ * Purpose: Simulate the up arrow being pressed when
+ * the button is pressed.
+ *
+ */
+
 #include <Arduino.h>
 #include <Bounce2.h>
 
-#define GREEN_BUTTON_PIN 1
-#define RED_BUTTON_PIN 0
+#define DROUGHT_BUTTON_PIN 2
 #define KEY KEY_UP
 
 bool prevPressed = false;
 
-Bounce2::Button greenButton = Bounce2::Button();
 Bounce2::Button redButton = Bounce2::Button();
+Bounce2::Button droughtButton = Bounce2::Button();
 
-void setup() {
+void setup()
+{
+  // Declare explicit pin modes here
+  // Usually helpful if not necessary for Teensy specifically
+  // Otherwise won't fully open up / connect the pin.
+  pinMode(13, OUTPUT);
+  pinMode(2, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
+
   // Button setups
-  greenButton.attach(GREEN_BUTTON_PIN, INPUT_PULLUP);
-  redButton.attach(RED_BUTTON_PIN, INPUT_PULLUP);
-  greenButton.interval(5);
-  redButton.interval(5);
-  greenButton.setPressedState(LOW);
-  redButton.setPressedState(LOW);
+  droughtButton.attach(DROUGHT_BUTTON_PIN, INPUT_PULLUP);
+  droughtButton.interval(5);
+  droughtButton.setPressedState(LOW);
 
   // Serial and keyboard starts
   Serial.begin(9600);
   Keyboard.begin();
+
+  // Turn LED on Teensy board on/
+  digitalWrite(13, HIGH);
 }
 
-void loop() {
-  greenButton.update();
-  redButton.update();
+void loop()
+{
+  droughtButton.update();
 
-  //This code alternates between presses.
-  //If it is pressed once that turns it on, if it is pressed again,
-  //that turns it off. This is taken care of in the Unity script
-  //but I added the functionality here too if we need it in the future.
-  // if(greenButton.pressed()){
-  //   if(prevPressed == false) {
-  //     prevPressed = true;
-  //     Keyboard.press(KEY);
-  //     Serial.println("UP key pressed.");
-  //     delay(20);
-  //   } else {
-  //     prevPressed = false;
-  //     Serial.println("UP key released.");
-  //     Keyboard.releaseAll();
-  //     delay(20);
-  //   }
-  // }
-
-  // if(greenButton.pressed()){
-  //   Keyboard.press(KEY);
-  //   Keyboard.releaseAll();
-  // }
-
-// If green button is pressed, then press the mouse
-// In the Unity program, this coordinates to creating water
-// in the simulation (adds more water when the "mouse" is pressed)
-  if(greenButton.pressed() && !prevPressed){
-    prevPressed = true;
-    Mouse.press();
-  } else if(greenButton.pressed() && prevPressed){
-    prevPressed = false;
-    Mouse.release();
-  }
-
-// If red button is pressed, press the key "up"
-// In the Unity program, this coordinates to clearing the water
-// from the simulation
-  if(redButton.pressed()){
+  // If red button is pressed, press the key "up"
+  // In the Unity program, this coordinates to clearing the water
+  // from the simulation
+  if (droughtButton.pressed())
+  {
     Keyboard.press(KEY);
     delay(20);
     Keyboard.releaseAll();
