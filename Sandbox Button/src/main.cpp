@@ -15,7 +15,6 @@
 
 bool prevPressed = false;
 
-Bounce2::Button redButton = Bounce2::Button();
 Bounce2::Button droughtButton = Bounce2::Button();
 
 void setup()
